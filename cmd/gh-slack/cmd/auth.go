@@ -16,17 +16,17 @@ var authCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Read()
 		if err != nil {
-			return err
+			return fmt.Errorf("error reading configuration: %w", err)
 		}
 
 		team, err := getFlagOrElseConfig(cfg, cmd.Flags(), "team")
 		if err != nil {
-			return err
+			return fmt.Errorf("error reading team: %w", err)
 		}
 
 		auth, err := slack.GetCookieAuth(team)
 		if err != nil {
-			return err
+			return fmt.Errorf("error getting cookie auth: %w", err)
 		}
 
 		vals := url.Values{}
